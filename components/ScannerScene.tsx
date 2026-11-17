@@ -7,8 +7,8 @@ export function ScannerScene({ mode }: { mode: ScannerMode }) {
   return (
     <figure className={`scanner-art scanner-photo mode-${mode.toLowerCase()}`}>
       <Image
-        src="/assets/scanner-xray-v11.webp"
-        alt="Hyperrealistic airport X-ray scan of two asymmetrically packed equipment cases with layered electronics and translucent cables, including an iPod nano, shoe-shaped perfume bottle, vintage watch, clamshell iBook, reusable bottle, translucent handheld game console, displaced chargers, headphones, keyboard, memory, camera, and an empty ceramic-lined travel cup."
+        src="/assets/scanner-xray-v13.webp"
+        alt="Hyperrealistic airport X-ray scan of an angled soft-sided carry-on and a larger hard-shell roller suitcase with layered electronics and translucent cables, including an iPod nano, shoe-shaped perfume bottle, vintage watch, clamshell iBook, reusable bottle, translucent handheld game console, displaced chargers, headphones, keyboard, memory, camera, and an empty ceramic-lined travel cup."
         fill
         priority
         sizes="(max-width: 820px) 100vw, (max-width: 900px) calc(100vw - 238px), calc(100vw - 304px)"

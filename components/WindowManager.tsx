@@ -13,5 +13,6 @@ type Props = {
 };
 
 export function WindowManager({ windows, focusedId, close, focus, minimize, move }: Props) {
-  return <div className="window-layer">{windows.map(win => <InspectionWindow key={win.record.id} window={win} focused={win.record.id === focusedId} onClose={() => close(win.record.id)} onFocus={() => focus(win.record.id)} onMinimize={() => minimize(win.record.id)} onMove={(x, y) => move(win.record.id, x, y)}/>)}</div>;
+  if (windows.length === 0) return null;
+  return <div className="window-layer" onPointerDown={event => { if (event.target === event.currentTarget) close(focusedId ?? windows[0].record.id); }}>{windows.map(win => <InspectionWindow key={win.record.id} window={win} focused={win.record.id === focusedId} onClose={() => close(win.record.id)} onFocus={() => focus(win.record.id)} onMinimize={() => minimize(win.record.id)} onMove={(x, y) => move(win.record.id, x, y)}/>)}</div>;
 }

@@ -16,6 +16,7 @@ export type Organization = {
 
 export type Accomplishment = {
   id: string;
+  slug: string;
   code: string;
   title: string;
   summary: string;
@@ -32,6 +33,7 @@ export type Accomplishment = {
 
 export type Project = {
   id: string;
+  slug: string;
   code: string;
   title: string;
   subtitle: string;
@@ -51,6 +53,7 @@ export type Project = {
 
 export type Capability = {
   id: string;
+  slug: string;
   code: string;
   title: string;
   summary: string;
@@ -63,6 +66,7 @@ export type Capability = {
 
 export type InspectionRecord = {
   id: string;
+  slug: string;
   mode: ScannerMode | "GLOBAL";
   kind: RecordKind;
   code: string;
@@ -97,95 +101,102 @@ export const organizations: Organization[] = [
 export const accomplishments: Accomplishment[] = [
   {
     id: "retrieval-platform",
+    slug: "retrieval-systems",
     code: "RETR-SYS",
-    title: "Production Retrieval Systems",
-    summary: "Semantic retrieval infrastructure for AI-assisted engineering workflows across more than 50,000 technical documents.",
-    context: "Technical knowledge had to be ingested, indexed, searched, and evaluated as part of production engineering workflows.",
-    built: "Document ingestion, embedding generation, vector indexing, and semantic-search APIs, plus tooling for retrieval-quality analysis and regression detection.",
-    approach: "Iterated on chunking strategies, embedding pipelines, ranking logic, and request orchestration while comparing retrieval experiments before deployment.",
+    title: "Retrieval That Holds Up in Production",
+    summary: "I built semantic retrieval infrastructure for engineering workflows across more than 50,000 technical documents.",
+    context: "Search had to turn a large, uneven document collection into results engineers could actually find and trust.",
+    built: "I implemented ingestion, chunking, embedding generation, vector indexing, search APIs, and tooling to analyze retrieval quality and regressions.",
+    approach: "I compared chunking and ranking strategies before deployment and kept evaluation close to the retrieval pipeline so changes could be measured.",
     outcome: "Served searchable engineering knowledge across 50K+ technical documents.",
     technologies: ["Python", "Vector retrieval", "Embeddings", "Semantic search", "Retrieval evaluation"],
     capabilityIds: ["ai-applications", "model-evaluation", "retrieval-search", "data-experimentation"],
     organizationId: "agilent",
     object: "Evidence archive",
-    region: { x: 23, y: 10, w: 21, h: 34 },
+    region: { x: 23, y: 8, w: 17, h: 27 },
   },
   {
     id: "async-workflows",
+    slug: "async-api-reliability",
     code: "ASYNC-OPS",
-    title: "Async Processing & API Reliability",
-    summary: "Distributed Python backend services for high-volume telemetry, workflow events, and long-running AI operations.",
-    context: "AI and engineering workflows needed reliable execution beyond the lifetime and failure model of a synchronous request.",
-    built: "Backend APIs and execution services using asynchronous workers, batching, retries, and queue-based processing across containerized AWS infrastructure.",
-    approach: "Separated request handling from durable work execution and added retry and recovery paths for failed workflows.",
+    title: "Reliable Async AI Workflows",
+    summary: "I built Python services that move long-running AI and telemetry work out of synchronous request paths.",
+    context: "Important work could outlive an HTTP request, arrive in bursts, or fail halfway through execution.",
+    built: "I implemented APIs, asynchronous workers, batching, retries, and queue-based processing on containerized AWS infrastructure.",
+    approach: "I separated request handling from durable execution and made retry and recovery behavior explicit instead of hiding it inside API handlers.",
     outcome: "The résumé reports an approximately 40% throughput improvement.",
     technologies: ["Python", "Async workers", "Queues", "REST APIs", "AWS", "Containers"],
     capabilityIds: ["ai-applications", "backend-distributed", "reliability-observability"],
     organizationId: "agilent",
     object: "Cooled server module",
-    region: { x: 45, y: 9, w: 16, h: 36 },
+    region: { x: 39, y: 8, w: 15, h: 26 },
   },
   {
     id: "workflow-observability",
+    slug: "workflow-observability",
     code: "OPS-TRACE",
-    title: "Workflow Reliability & Observability",
-    summary: "Operational instrumentation and automated recovery for distributed production services.",
-    context: "Distributed workflow failures needed to be diagnosable and recoverable without prolonged manual investigation.",
-    built: "Centralized logging, metrics, tracing, alerting, and automated recovery paths for failed workflows.",
-    approach: "Connected service-level signals to workflow execution state so failures could be detected, traced, and retried with useful context.",
+    title: "Make Failures Explain Themselves",
+    summary: "I added the instrumentation and recovery paths needed to operate distributed production workflows.",
+    context: "A failed workflow was not useful unless an engineer could find where it failed, understand why, and recover it safely.",
+    built: "I connected centralized logs, metrics, traces, alerts, and automated recovery to workflow execution state.",
+    approach: "Operational signals carried workflow context so failures could be traced across services and retried with enough information to diagnose the original cause.",
     outcome: "The résumé reports approximately 60% lower incident-resolution time.",
     technologies: ["Logging", "Metrics", "Tracing", "Alerting", "Automated recovery"],
     capabilityIds: ["backend-distributed", "reliability-observability"],
     organizationId: "agilent",
     object: "Displaced charger + cable",
-    region: { x: 58, y: 54, w: 8, h: 12 },
+    region: { x: 50, y: 79, w: 11, h: 11 },
   },
   {
     id: "ml-experiment-infra",
+    slug: "distributed-ml-experiments",
     code: "ML-ORCH",
-    title: "Distributed ML Experiment Infrastructure",
-    summary: "Infrastructure for scheduling, tracking, validating, and reproducing distributed ML experiments.",
-    context: "Researchers needed faster and more repeatable training and experimentation workflows across distributed environments.",
-    built: "AWS- and Docker-based distributed ML infrastructure with workload scheduling, artifact tracking, automated validation, rollback support, and execution management.",
-    approach: "Made experiment configuration and runtime state explicit so execution could be reproduced, validated, and rolled back across containerized environments.",
+    title: "Reproducible Distributed ML Experiments",
+    summary: "I built infrastructure to schedule, track, validate, and reproduce distributed ML experiments.",
+    context: "Researchers needed shorter feedback loops without losing the configuration and artifacts required to reproduce a run.",
+    built: "I implemented AWS- and Docker-based execution with workload scheduling, artifact tracking, automated validation, rollback support, and run management.",
+    approach: "Experiment configuration and runtime state were explicit artifacts, which made runs easier to compare, validate, and restore.",
     outcome: "The résumé reports experiment turnaround reduced from hours to under one hour.",
     technologies: ["AWS", "Docker", "Distributed execution", "Artifact tracking", "Validation"],
     capabilityIds: ["backend-distributed", "developer-tooling", "data-experimentation"],
     organizationId: "cerebras",
     object: "Compute board",
-    region: { x: 27, y: 56, w: 14, h: 34 },
+    region: { x: 26, y: 48, w: 17, h: 29 },
   },
   {
     id: "model-regression",
+    slug: "model-regression-testing",
     code: "REG-CHECK",
-    title: "Model Regression & Performance Testing",
-    summary: "Tooling for model benchmarking, experiment comparison, regression detection, and distributed-workload analysis.",
-    context: "Model and runtime changes needed repeatable checks before release, while performance bottlenecks required system-level visibility.",
-    built: "Benchmarking and regression tooling plus telemetry analysis for memory, I/O, and compute bottlenecks in distributed training workloads.",
-    approach: "Compared experiment quality and runtime behavior across changes, with automated validation and reproducible execution workflows.",
+    title: "Catch Model Regressions Before Release",
+    summary: "I built repeatable checks for model behavior and tooling to investigate performance changes in distributed workloads.",
+    context: "A model or runtime change could improve one path while quietly breaking correctness or shifting memory, I/O, and compute costs elsewhere.",
+    built: "I built benchmarking and regression workflows alongside telemetry analysis for distributed training bottlenecks.",
+    approach: "I compared model quality and runtime behavior across reproducible runs instead of treating benchmark scores and systems telemetry as separate problems.",
     technologies: ["Model evaluation", "Regression testing", "Telemetry", "Benchmarking", "Performance analysis"],
     capabilityIds: ["model-evaluation", "reliability-observability", "data-experimentation"],
     organizationId: "cerebras",
     object: "Headphones + sensors",
-    region: { x: 43, y: 56, w: 14, h: 18 },
+    region: { x: 41, y: 49, w: 16, h: 21 },
   },
   {
     id: "streaming-pipelines",
+    slug: "enterprise-streaming-pipelines",
     code: "STREAM-50G",
-    title: "Enterprise Streaming Pipelines",
-    summary: "Kafka-based distributed data pipelines and tuned SQL workflows for downstream analytics.",
-    context: "Enterprise analytics systems needed steady ingestion and lower-latency query paths across distributed services.",
-    built: "Kafka streaming pipelines processing more than 50GB of enterprise data daily and optimized SQL-backed workflows.",
-    approach: "Combined streaming ingestion with query-path tuning for the downstream analytics workload.",
+    title: "Streaming Data Without Slowing Analytics",
+    summary: "I built Kafka pipelines that processed more than 50GB of enterprise data each day and tuned the SQL paths that consumed it.",
+    context: "Ingestion had to remain steady while downstream analytics needed lower and more predictable latency.",
+    built: "I implemented distributed Kafka ingestion and optimized SQL-backed analytics workflows.",
+    approach: "I treated the stream and its downstream query path as one system, then tuned the handoff between ingestion and analytics.",
     outcome: "The résumé reports approximately 30% lower downstream analytics latency.",
     technologies: ["Kafka", "SQL", "Streaming data", "Distributed services"],
     capabilityIds: ["backend-distributed", "reliability-observability", "data-experimentation"],
     organizationId: "ibm",
     object: "Memory + cable array",
-    region: { x: 71, y: 89, w: 18, h: 7 },
+    region: { x: 69, y: 83, w: 15, h: 9 },
   },
   {
     id: "cmu-scalable-systems",
+    slug: "scalable-systems-cmu",
     code: "EDU-CMU",
     title: "Scalable Systems Graduate Work",
     summary: "MS in Software Engineering — Scalable Systems at Carnegie Mellon University.",
@@ -196,53 +207,56 @@ export const accomplishments: Accomplishment[] = [
     capabilityIds: ["ai-applications", "backend-distributed", "data-experimentation"],
     organizationId: "cmu",
     object: "Keyboard matrix",
-    region: { x: 44, y: 75, w: 20, h: 17 },
+    region: { x: 40, y: 67, w: 23, h: 18 },
   },
 ];
 
 export const projects: Project[] = [
   {
     id: "hermes",
+    slug: "hermes-webmcp-guard",
     code: "WEB-MCP",
     title: "Hermes WebMCP Guard",
     subtitle: "Permission-aware website capabilities for Hermes Agent",
-    summary: "An installable Hermes Agent plugin that discovers and invokes website-provided WebMCP tools while treating every capability as temporary and untrusted.",
-    problem: "Structured website capabilities need origin, lifecycle, schema, and approval boundaries before an agent can invoke them safely.",
-    built: "A firewall around Chrome's native WebMCP CDP transport with fixed connect, discovery, execution, and disconnect tools; audit logging; redaction; and bypass detection.",
-    approach: "Explicit endpoints and allowed origins, strict JSON schemas, document-bound capability IDs, bounded execution, safe revocation, and exact one-call approvals.",
+    summary: "I built a Hermes Agent plugin that can use website-provided WebMCP tools without treating a web page as trusted infrastructure.",
+    problem: "A website can change its tools, schemas, origin, or document state between discovery and execution. Agent approval has to remain bound to the exact action the user reviewed.",
+    built: "I wrapped Chrome's native WebMCP CDP transport with fixed connection, discovery, execution, and disconnect operations plus audit logging, redaction, and bypass detection.",
+    approach: "Configured endpoints and allowed origins constrain discovery. Strict schemas, document-bound capability IDs, bounded execution, safe revocation, and one-call approvals constrain use.",
     decisions: "The model can select only configured endpoints. Origin or schema changes fail closed. Approvals bind to owner, call, capability, and canonical arguments, then are consumed once.",
     limitations: "WebMCP remains experimental. The plugin uses an explicit browser connection because the documented Hermes supervisor path lacks the authoritative event subscription required by this adapter.",
     outcome: "The repository documents verified Python and Raspberry Pi 5 live-browser flows with Hermes 0.23.1 and Chromium Shell 156.",
     technologies: ["Python", "WebMCP", "Chrome CDP", "JSON Schema", "pytest", "WebSocket"],
     capabilityIds: ["ai-applications", "developer-tooling", "reliability-observability"],
     links: [{ id: "hermes-github", label: "GitHub", href: "https://github.com/NifasathA/hermes-webmcp-guard", external: true }],
-    object: "Nano + perfume + watch cable cluster",
-    region: { x: 7, y: 13, w: 15, h: 31 },
+    object: "iPod + perfume + watch cable cluster",
+    region: { x: 11, y: 13, w: 18, h: 25 },
   },
   {
     id: "provenance",
+    slug: "provenance",
     code: "ADV-EVAL",
     title: "Provenance",
     subtitle: "Adversarial AI agent evaluation",
-    summary: "An adversarial AI-agent evaluation project involving synthetic trajectories and controlled experiments.",
-    problem: "Evaluate agent behavior under deliberately constructed, repeatable adversarial conditions.",
-    built: "An experimental evaluation approach using synthetic trajectories and controlled experiments.",
-    approach: "Controlled experiment design and synthetic trajectories are supplied project context; implementation specifics are left unexpanded until repository material is available.",
+    summary: "I am exploring how synthetic trajectories and controlled experiments can expose failures in AI-agent behavior.",
+    problem: "Agent failures are difficult to compare when every run follows a different path or depends on uncontrolled external state.",
+    built: "A controlled evaluation approach built around repeatable adversarial conditions and synthetic trajectories.",
+    approach: "Controlled experiment design and synthetic trajectories are supplied project context. Implementation specifics are left unexpanded until repository material is available.",
     decisions: "The archive distinguishes the verified project premise from architecture details that have not yet been supplied.",
     limitations: "No repository, benchmark result, or implementation detail is currently available in the workspace.",
     technologies: ["AI evaluation", "Synthetic trajectories", "Controlled experiments"],
     capabilityIds: ["model-evaluation", "data-experimentation"],
     object: "Evidence archive",
-    region: { x: 23, y: 10, w: 21, h: 34 },
+    region: { x: 23, y: 8, w: 17, h: 27 },
   },
   {
     id: "agentdeck",
+    slug: "agentdeck",
     code: "AGENT-DECK",
     title: "AgentDeck",
     subtitle: "A physical control surface for live coding-agent sessions",
-    summary: "An ESP32-S3 macropad and ambient display connected to a local daemon that makes concurrent coding-agent activity visible and controllable from a desk.",
+    summary: "I built an ESP32-S3 desk controller that makes concurrent coding-agent sessions visible and keeps permission decisions physically deliberate.",
     problem: "Multiple agent sessions can be difficult to track, and permission prompts should remain explicit, visible, and human-controlled.",
-    built: "ESP32-S3 firmware, a Python host daemon, a USB serial protocol, and lifecycle hooks that map active sessions to a four-tile display and route permission requests to the device.",
+    built: "I wrote ESP32-S3 firmware, a Python host daemon, a USB serial protocol, and lifecycle hooks that map sessions to a four-tile display and route permission requests to the device.",
     approach: "Agent hooks send events to a loopback-only FastAPI service. The daemon owns session state and emits compact JSON-line updates over USB CDC while the device remains a deliberately simple I/O surface.",
     decisions: "Denial requires a tap while approval requires a deliberate hold. Long commands must be scrolled before approval unlocks, truncated commands are deny-only, and every missing or malformed response falls back to the normal terminal prompt.",
     limitations: "The repository identifies the current build as Phase 0: one physical key, the onboard display, and Claude Code integration. Broader agent support remains future work.",
@@ -251,39 +265,44 @@ export const projects: Project[] = [
     capabilityIds: ["ai-applications", "developer-tooling", "reliability-observability"],
     links: [{ id: "agentdeck-github", label: "GitHub", href: "https://github.com/NifasathA/agentdeck", external: true }],
     object: "Handheld control deck",
-    region: { x: 61, y: 69, w: 15, h: 22 },
+    region: { x: 57, y: 63, w: 19, h: 23 },
   },
   {
     id: "sentinel",
+    slug: "sentinel-forgetting-evaluator",
     code: "FORGET-CANARY",
     title: "Sentinel",
     subtitle: "Catastrophic-forgetting checks for LLM fine-tuning",
-    summary: "An early-stage Python evaluator for detecting capability regressions during LLM fine-tuning with versioned canary datasets and repeatable checkpoint comparisons.",
+    summary: "I built an early-stage evaluator that looks for capability regressions during LLM fine-tuning using versioned canary data and repeatable checkpoint comparisons.",
     problem: "Fine-tuning can improve a target behavior while quietly degrading unrelated knowledge, reasoning, fluency, or instruction-following capabilities.",
-    built: "A framework-independent checkpoint evaluator, versioned canary buckets, result schemas, appendable JSONL run logs, and correctness tests for the scoring path.",
+    built: "I implemented a framework-independent checkpoint evaluator, versioned canary buckets, result schemas, appendable JSONL logs, and correctness tests for the scoring path.",
     approach: "The evaluator measures token-weighted perplexity only over completion tokens, compares each capability bucket with a baseline, and optionally performs forward-only accuracy checks without requiring text generation.",
     decisions: "Prompt labels are masked from loss, samples are length-grouped into bounded microbatches, canary integrity can be checksum-verified, and CUDA out-of-memory errors return a skipped result instead of crashing training.",
     limitations: "The checked-out repository describes this as Phase 0. The Hugging Face Trainer callback and live training integration are planned but are not yet part of the public package surface.",
-    outcome: "The repository includes focused tests for completion-token masking, token-weighted aggregation, canary handling, and result persistence; no benchmark outcome is claimed.",
+    outcome: "The repository includes focused tests for completion-token masking, token-weighted aggregation, canary handling, and result persistence. No benchmark outcome is claimed.",
     technologies: ["Python", "PyTorch", "Transformers", "pytest", "JSONL", "Pydantic"],
     capabilityIds: ["model-evaluation", "data-experimentation", "developer-tooling"],
     links: [{ id: "sentinel-github", label: "GitHub", href: "https://github.com/NifasathA/sentinel", external: true }],
-    object: "Cooled diagnostic board",
-    region: { x: 45, y: 9, w: 16, h: 36 },
+    object: "Lower diagnostic board",
+    region: { x: 26, y: 48, w: 17, h: 29 },
   },
 ];
 
 export const capabilities: Capability[] = [
-  { id: "ai-applications", code: "AI-APP", title: "AI Applications & Agents", summary: "Application-layer AI systems connected to reliable backend execution and explicit tool boundaries.", areas: ["Agent workflows", "AI-assisted engineering", "Production APIs", "LLM integration"], technologies: ["Python", "FastAPI", "WebMCP", "REST APIs"], evidenceIds: ["retrieval-platform", "async-workflows", "hermes", "agentdeck"], object: "Cooled server module", region: { x: 45, y: 9, w: 16, h: 36 } },
-  { id: "model-evaluation", code: "MODEL-EVAL", title: "Model Evaluation", summary: "Regression detection, retrieval-quality analysis, experiment comparison, and adversarial evaluation design.", areas: ["Regression testing", "Retrieval evaluation", "Benchmarking", "Adversarial testing"], technologies: ["pytest", "Automated scoring", "Experiment comparison", "Telemetry"], evidenceIds: ["model-regression", "retrieval-platform", "provenance", "sentinel"], object: "Evidence archive", region: { x: 23, y: 10, w: 21, h: 34 } },
-  { id: "retrieval-search", code: "RETRIEVAL", title: "Retrieval & Search", summary: "End-to-end document ingestion, embedding, indexing, semantic search, ranking, and evaluation.", areas: ["Chunking", "Embeddings", "Vector indexing", "Reranking", "Semantic search"], technologies: ["Python", "Vector retrieval", "Embedding pipelines", "Search APIs"], evidenceIds: ["retrieval-platform"], object: "Nano + watch + indexed cable", region: { x: 7, y: 13, w: 15, h: 31 } },
-  { id: "backend-distributed", code: "DIST-SYS", title: "Backend & Distributed Systems", summary: "Queue-based work execution, distributed data processing, APIs, and service orchestration.", areas: ["Queues and workers", "Async processing", "Streaming data", "Service orchestration"], technologies: ["Python", "Kafka", "AWS", "Docker", "SQL"], evidenceIds: ["async-workflows", "ml-experiment-infra", "streaming-pipelines"], object: "Compute board", region: { x: 29, y: 56, w: 18, h: 35 } },
-  { id: "developer-tooling", code: "DEV-TOOLS", title: "Developer Tooling", summary: "Tools that expose complex system behavior through safer, repeatable engineering workflows.", areas: ["Agent tooling", "Experiment tooling", "Audit logs", "Internal interfaces"], technologies: ["Python", "CLI workflows", "JSON Schema", "Testing"], evidenceIds: ["hermes", "agentdeck", "sentinel", "ml-experiment-infra"], object: "Keyboard matrix", region: { x: 44, y: 75, w: 20, h: 17 } },
-  { id: "reliability-observability", code: "RELIABILITY", title: "Reliability & Observability", summary: "Logging, metrics, tracing, alerting, recovery, and regression checks for production and ML systems.", areas: ["Metrics", "Tracing", "Alerting", "Automated recovery", "Regression checks"], technologies: ["Prometheus", "Grafana", "CloudWatch", "Logging"], evidenceIds: ["workflow-observability", "model-regression", "hermes", "agentdeck"], object: "Displaced charger + cable", region: { x: 58, y: 54, w: 8, h: 12 } },
-  { id: "data-experimentation", code: "DATA-EXP", title: "Data & Experimentation", summary: "Experiment comparison, artifact tracking, evaluation datasets, streaming data, and controlled tests.", areas: ["Artifact tracking", "Controlled experiments", "Evaluation data", "Streaming pipelines"], technologies: ["Kafka", "SQL", "Experiment tracking", "Benchmarking"], evidenceIds: ["retrieval-platform", "ml-experiment-infra", "streaming-pipelines", "provenance", "sentinel"], object: "Empty ceramic travel cup", region: { x: 34, y: 76, w: 10, h: 18 } },
+  { id: "ai-applications", slug: "ai-applications-agents", code: "AI-APP", title: "AI Applications & Agents", summary: "I connect model behavior to dependable APIs, explicit tool boundaries, and backend execution that can survive real usage.", areas: ["Agent workflows", "AI-assisted engineering", "Production APIs", "LLM integration"], technologies: ["Python", "FastAPI", "WebMCP", "REST APIs"], evidenceIds: ["retrieval-platform", "async-workflows", "hermes", "agentdeck"], object: "Cooled GPU board", region: { x: 39, y: 8, w: 15, h: 26 } },
+  { id: "model-evaluation", slug: "model-evaluation", code: "MODEL-EVAL", title: "Model Evaluation", summary: "I build repeatable checks for model regressions, retrieval quality, experiment comparisons, and adversarial agent behavior.", areas: ["Regression testing", "Retrieval evaluation", "Benchmarking", "Adversarial testing"], technologies: ["pytest", "Automated scoring", "Experiment comparison", "Telemetry"], evidenceIds: ["model-regression", "retrieval-platform", "provenance", "sentinel"], object: "Evidence papers + storage media", region: { x: 23, y: 8, w: 17, h: 27 } },
+  { id: "retrieval-search", slug: "retrieval-search", code: "RETRIEVAL", title: "Retrieval & Search", summary: "I work across ingestion, chunking, embeddings, indexing, ranking, search APIs, and the evaluation needed to tell whether retrieval improved.", areas: ["Chunking", "Embeddings", "Vector indexing", "Reranking", "Semantic search"], technologies: ["Python", "Vector retrieval", "Embedding pipelines", "Search APIs"], evidenceIds: ["retrieval-platform"], object: "iPod + watch cluster", region: { x: 13, y: 20, w: 11, h: 14 } },
+  { id: "backend-distributed", slug: "distributed-systems", code: "DIST-SYS", title: "Backend & Distributed Systems", summary: "I build queue-backed workers, streaming pipelines, APIs, and orchestration paths with explicit failure and recovery behavior.", areas: ["Queues and workers", "Async processing", "Streaming data", "Service orchestration"], technologies: ["Python", "Kafka", "AWS", "Docker", "SQL"], evidenceIds: ["async-workflows", "ml-experiment-infra", "streaming-pipelines"], object: "Fan-equipped compute board", region: { x: 26, y: 48, w: 17, h: 29 } },
+  { id: "developer-tooling", slug: "developer-tooling", code: "DEV-TOOLS", title: "Developer Tooling", summary: "I turn complicated system behavior into tools that are safer to operate, easier to test, and easier to understand.", areas: ["Agent tooling", "Experiment tooling", "Audit logs", "Internal interfaces"], technologies: ["Python", "CLI workflows", "JSON Schema", "Testing"], evidenceIds: ["hermes", "agentdeck", "sentinel", "ml-experiment-infra"], object: "Mechanical keyboard", region: { x: 40, y: 67, w: 23, h: 18 } },
+  { id: "reliability-observability", slug: "reliability-observability", code: "RELIABILITY", title: "Reliability & Observability", summary: "I connect logs, metrics, traces, alerts, recovery, and regression checks to the work a production system is actually performing.", areas: ["Metrics", "Tracing", "Alerting", "Automated recovery", "Regression checks"], technologies: ["Prometheus", "Grafana", "CloudWatch", "Logging"], evidenceIds: ["workflow-observability", "model-regression", "hermes", "agentdeck"], object: "Inspection camera module", region: { x: 81, y: 74, w: 11, h: 15 } },
+  { id: "data-experimentation", slug: "data-experimentation", code: "DATA-EXP", title: "Data & Experimentation", summary: "I make experiment inputs, artifacts, comparisons, and evaluation data explicit so results can be reproduced and challenged.", areas: ["Artifact tracking", "Controlled experiments", "Evaluation data", "Streaming pipelines"], technologies: ["Kafka", "SQL", "Experiment tracking", "Benchmarking"], evidenceIds: ["retrieval-platform", "ml-experiment-infra", "streaming-pipelines", "provenance", "sentinel"], object: "Headphones + signal cable", region: { x: 41, y: 49, w: 17, h: 21 } },
+  { id: "agent-security", slug: "agent-security-tool-boundaries", code: "AGENT-SAFE", title: "Agent Security & Tool Boundaries", summary: "I design agent-tool integrations around explicit capabilities, constrained discovery, approval boundaries, and audit trails instead of treating tool output as trusted by default.", areas: ["Capability boundaries", "Origin and schema validation", "Single-use approvals", "Audit and redaction"], technologies: ["WebMCP", "Chrome CDP", "JSON Schema", "Python", "pytest"], evidenceIds: ["hermes", "provenance"], object: "Upper adapter + cable junction", region: { x: 10, y: 12, w: 14, h: 8 } },
+  { id: "api-async-systems", slug: "api-async-workflows", code: "API-ASYNC", title: "APIs & Asynchronous Workflows", summary: "I separate fast request paths from durable background work, then make batching, retries, recovery, and execution state explicit.", areas: ["API design", "Queues and workers", "Batch processing", "Retries and recovery"], technologies: ["Python", "REST APIs", "Queues", "AWS", "Docker"], evidenceIds: ["async-workflows", "retrieval-platform", "workflow-observability"], object: "Power adapter + routed cable", region: { x: 50, y: 79, w: 11, h: 11 } },
+  { id: "performance-scalability", slug: "performance-scalability", code: "PERF-SCALE", title: "Performance & Scalability", summary: "I use workload measurements, controlled comparisons, and system telemetry to find bottlenecks across data pipelines and distributed execution.", areas: ["Throughput and latency", "Bottleneck analysis", "Workload scheduling", "Query-path optimization"], technologies: ["Benchmarking", "Telemetry", "Kafka", "SQL", "Docker"], evidenceIds: ["ml-experiment-infra", "model-regression", "streaming-pipelines", "retrieval-platform"], object: "Old iBook mainboard", region: { x: 60, y: 48, w: 22, h: 21 } },
 ];
 
 export const externalLinks: ExternalLink[] = [
+  { id: "x", label: "𝕏", href: "https://x.com/niferential", external: true },
   { id: "linkedin", label: "LINKEDIN", href: "https://www.linkedin.com/in/nifasath/", external: true },
   { id: "github", label: "GITHUB", href: "https://github.com/NifasathA", external: true },
   { id: "email", label: "EMAIL", href: "mailto:nifasathsa@gmail.com" },
@@ -311,7 +330,7 @@ function evidenceFor(ids: string[]): NonNullable<InspectionRecord["evidence"]> {
 function accomplishmentRecord(item: Accomplishment): InspectionRecord {
   const organization = organizationById.get(item.organizationId)!;
   return {
-    id: item.id, mode: "EXPERIENCE", kind: organization.type === "EDUCATION" ? "BACKGROUND" : "ACCOMPLISHMENT",
+    id: item.id, slug: item.slug, mode: "EXPERIENCE", kind: organization.type === "EDUCATION" ? "BACKGROUND" : "ACCOMPLISHMENT",
     code: item.code, title: item.title, subtitle: organization.name, category: organization.type === "EDUCATION" ? "EDUCATION / BACKGROUND" : "ENGINEERING ACCOMPLISHMENT",
     classification: organization.type === "EDUCATION" ? "ACADEMIC RECORD" : "PROFESSIONAL EVIDENCE", object: item.object,
     summary: item.summary, problem: item.context, built: item.built, approach: item.approach, outcome: item.outcome,
@@ -321,7 +340,7 @@ function accomplishmentRecord(item: Accomplishment): InspectionRecord {
 
 function projectRecord(item: Project): InspectionRecord {
   return {
-    id: item.id, mode: "PROJECTS", kind: "PROJECT", code: item.code, title: item.title, subtitle: item.subtitle,
+    id: item.id, slug: item.slug, mode: "PROJECTS", kind: "PROJECT", code: item.code, title: item.title, subtitle: item.subtitle,
     category: "INDEPENDENT PROJECT", classification: "PROJECT SIGNATURE", object: item.object, summary: item.summary,
     problem: item.problem, built: item.built, approach: item.approach, decisions: item.decisions, limitations: item.limitations,
     outcome: item.outcome, technologies: item.technologies, association: "Independent project", scope: "PERSONAL PROJECT", links: item.links, region: item.region,
@@ -330,28 +349,48 @@ function projectRecord(item: Project): InspectionRecord {
 
 function capabilityRecord(item: Capability): InspectionRecord {
   return {
-    id: item.id, mode: "SYSTEMS", kind: "CAPABILITY", code: item.code, title: item.title,
+    id: item.id, slug: item.slug, mode: "SYSTEMS", kind: "CAPABILITY", code: item.code, title: item.title,
     subtitle: item.areas.join(" · "), category: "CAPABILITY MAP", classification: "EVIDENCE-BACKED AREA", object: item.object,
     summary: item.summary, approach: `Technical areas: ${item.areas.join(", ")}.`, technologies: item.technologies,
     evidence: evidenceFor(item.evidenceIds), region: item.region,
   };
 }
 
-export function getModeRecords(mode: ScannerMode): InspectionRecord[] {
-  if (mode === "EXPERIENCE") return accomplishments.map(accomplishmentRecord);
-  if (mode === "PROJECTS") return projects.map(projectRecord);
-  return capabilities.map(capabilityRecord);
-}
+const recordsByMode: Record<ScannerMode, InspectionRecord[]> = {
+  EXPERIENCE: accomplishments.map(accomplishmentRecord),
+  PROJECTS: projects.map(projectRecord),
+  SYSTEMS: capabilities.map(capabilityRecord),
+};
+
+export const inspectionRecords = Object.values(recordsByMode).flat();
+const recordBySlug = new Map(inspectionRecords.map(record => [record.slug, record]));
+const recordById = new Map(inspectionRecords.map(record => [record.id, record]));
+
+export function getModeRecords(mode: ScannerMode): InspectionRecord[] { return recordsByMode[mode]; }
+export function getInspectionRecordBySlug(slug: string): InspectionRecord | undefined { return recordBySlug.get(slug); }
+export function getInspectionRecordById(id: string): InspectionRecord | undefined { return recordById.get(id); }
+export function getRecordPath(record: InspectionRecord): string { return `/inspect/${record.slug}/`; }
 
 export const contactRecord: InspectionRecord = {
-  id: "contact", mode: "GLOBAL", kind: "CLEARANCE", code: "EXIT-01", title: "External Connections",
+  id: "contact", slug: "contact", mode: "GLOBAL", kind: "CLEARANCE", code: "EXIT-01", title: "External Connections",
   subtitle: "Contact and document access", category: "CLEARANCE CHANNEL", classification: "USER-INITIATED CONNECTION", object: "Exit terminal",
   summary: "Contact Nifasath about AI systems, evaluation, distributed infrastructure, developer tooling, or production engineering work.",
   technologies: [], links: externalLinks, region: { x: 0, y: 0, w: 0, h: 0 },
 };
 
+export const developerNotesRecord: InspectionRecord = {
+  id: "developer-notes", slug: "developer-notes", mode: "GLOBAL", kind: "CLEARANCE", code: "DEV-NOTES", title: "Archive Implementation Notes",
+  subtitle: "A technical record hidden behind the status light", category: "INTERNAL DOCUMENTATION", classification: "OPERATOR DISCOVERY", object: "Diagnostic status indicator",
+  summary: "This portfolio is a stateful inspection interface rather than a sequence of landing-page sections. The scanner, sidebar, URL, and inspection window all resolve the same record registry.",
+  problem: "The interface needed to stay playful without making projects difficult to share, navigate, or read with assistive technology.",
+  built: "A typed content registry, URL-restorable inspection state, keyboard-operable detection regions, one active record window, responsive scanner panning, and static record pages for crawlers and social previews.",
+  decisions: "The X-ray remains a normal optimized image while semantic buttons sit above it. Record routes are statically generated, query links remain compatible, and reduced-motion users skip decorative scanning movement.",
+  outcome: "The result keeps the strange archival interface while exposing ordinary links, headings, metadata, and readable engineering records underneath it.",
+  technologies: ["Next.js", "TypeScript", "React", "CSS", "Static export", "Accessible HTML"], region: { x: 0, y: 0, w: 0, h: 0 },
+};
+
 export const modeCopy: Record<ScannerMode, { code: string; status: string; note: string; warning: string; alternatives: string[] }> = {
-  EXPERIENCE: { code: "ARCHIVE/WORK", status: "accomplishment records", note: "Evidence + associated background", warning: "NOTICE: PRODUCTION EXPERIENCE DETECTED", alternatives: ["MULTIPLE SYSTEMS DEPLOYED IN THE WILD", "FIELD EXPERIENCE VERIFIED", "HISTORY OF SHIPPING REAL SOFTWARE"] },
-  PROJECTS: { code: "ARCHIVE/PROJECTS", status: "independent project records", note: "Architecture + tradeoffs", warning: "WARNING: UNUSUAL LEVELS OF CURIOSITY", alternatives: ["EXPERIMENTAL BUILD PATTERNS DETECTED", "UNUSUAL PROJECT ACTIVITY IDENTIFIED", "MANUAL INSPECTION RECOMMENDED"] },
-  SYSTEMS: { code: "ARCHIVE/CAP", status: "capability categories", note: "Evidence-linked technical map", warning: "NOTICE: BROAD TECHNICAL SURFACE AREA DETECTED", alternatives: ["MULTIPLE SYSTEM LAYERS IDENTIFIED", "CROSS-DOMAIN ENGINEERING PATTERN DETECTED", "ADDITIONAL TECHNICAL INSPECTION ADVISED"] },
+  EXPERIENCE: { code: "ARCHIVE/WORK", status: "accomplishment records", note: "Evidence + associated background", warning: "NOTICE: PRODUCTION EXPERIENCE DETECTED", alternatives: ["MULTIPLE SYSTEMS DEPLOYED IN THE WILD", "FIELD NOTES: SOFTWARE SURVIVED CONTACT WITH REALITY", "HISTORY OF SHIPPING REAL SOFTWARE", "REPEAT OFFENDER: SHIPS TO PRODUCTION", "OPERATOR APPEARS FOND OF EDGE CASES", "REAL USERS DETECTED / SYSTEM REMAINED CALM"] },
+  PROJECTS: { code: "ARCHIVE/PROJECTS", status: "independent project records", note: "Architecture + tradeoffs", warning: "WARNING: UNUSUAL LEVELS OF CURIOSITY", alternatives: ["EXPERIMENTAL BUILD PATTERNS DETECTED", "TINY SIDE PROJECT ESCAPED CONTAINMENT", "CURIOSITY LEVELS: ADORABLY NONCOMPLIANT", "ONE MORE EXPERIMENT WAS APPARENTLY NECESSARY", "MANUAL INSPECTION RECOMMENDED / SNACKS OPTIONAL", "WARNING: WIRES MAY BE THINKING"] },
+  SYSTEMS: { code: "ARCHIVE/CAP", status: "capability categories", note: "Evidence-linked technical map", warning: "NOTICE: BROAD TECHNICAL SURFACE AREA DETECTED", alternatives: ["MULTIPLE SYSTEM LAYERS IDENTIFIED", "DEPENDENCIES FOUND HOLDING HANDS", "SEVERAL LAYERS COOPERATING SUSPICIOUSLY WELL", "QUEUE APPEARS PATIENT BUT DETERMINED", "EDGE CASE ADOPTED, NAMED, AND MONITORED", "SYSTEM STATUS: POLITE BUT PERSISTENT"] },
 };
