@@ -302,7 +302,7 @@ export const capabilities: Capability[] = [
 ];
 
 export const externalLinks: ExternalLink[] = [
-  { id: "x", label: "𝕏", href: "https://x.com/niferential", external: true },
+  { id: "x", label: "X / TWITTER", href: "https://x.com/niferential", external: true },
   { id: "linkedin", label: "LINKEDIN", href: "https://www.linkedin.com/in/nifasath/", external: true },
   { id: "github", label: "GITHUB", href: "https://github.com/NifasathA", external: true },
   { id: "email", label: "EMAIL", href: "mailto:nifasathsa@gmail.com" },

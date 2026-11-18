@@ -78,7 +78,7 @@ export function InspectionWindow({ window: win, focused, onClose, onFocus, onMin
           {record.mode !== "GLOBAL" && <button className="copy-record-link" onClick={copyRecordLink}>COPY RECORD LINK</button>}
           {copied && <span role="status">ARCHIVE LINK COPIED</span>}
         </div>
-        {!!record.links?.length && <nav className="record-links" aria-label="External connections">{record.links.map(link => <a className={link.id === "x" ? "external-link-x" : undefined} aria-label={link.id === "x" ? "X profile, @niferential" : link.label} title={link.id === "x" ? "@niferential on X" : undefined} href={link.href} key={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label}{link.id === "x" ? "" : " ↗"}</a>)}</nav>}
+        {!!record.links?.length && <nav className="record-links" aria-label="External connections">{record.links.map(link => <a aria-label={link.label} href={link.href} key={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label} ↗</a>)}</nav>}
       </div>}
       <div className="window-status"><span>REC {record.code}</span><span>READ ONLY</span><span>{record.classification}</span></div>
     </section>

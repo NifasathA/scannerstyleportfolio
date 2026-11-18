@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { contactRecord, developerNotesRecord, externalLinks, getInspectionRecordById, getInspectionRecordBySlug, getModeRecords, getRecordPath, modeCopy, organizations, type InspectionRecord, type ScannerMode } from "@/content/records";
+import { contactRecord, developerNotesRecord, getInspectionRecordById, getInspectionRecordBySlug, getModeRecords, getRecordPath, modeCopy, organizations, type InspectionRecord, type ScannerMode } from "@/content/records";
 import { ScannerScene } from "./ScannerScene";
 import { DetectionOverlay } from "./DetectionOverlay";
 import { WindowManager } from "./WindowManager";
 import type { WindowState } from "./InspectionWindow";
 import { ArchiveIndexWindow } from "./ArchiveIndexWindow";
+import { MobileInspectionDrawer } from "./MobileInspectionDrawer";
 
 const modes: ScannerMode[] = ["EXPERIENCE", "PROJECTS", "SYSTEMS"];
 
@@ -24,6 +25,7 @@ export function SecurityTerminal() {
   const [archiveError, setArchiveError] = useState<string | null>(null);
   const [diagnosticMode, setDiagnosticMode] = useState(false);
   const [viewAllOpen, setViewAllOpen] = useState(false);
+  const [mobileConsoleOpen, setMobileConsoleOpen] = useState(false);
   const topZ = useRef(10);
   const scannerViewportRef = useRef<HTMLDivElement>(null);
   const konamiIndex = useRef(0);
@@ -45,6 +47,7 @@ export function SecurityTerminal() {
       const typing = target?.matches("input, textarea, [contenteditable=true]");
       if (typing) return;
       if (event.key === "Escape" && viewAllOpen) { setViewAllOpen(false); return; }
+      if (event.key === "Escape" && mobileConsoleOpen) { setMobileConsoleOpen(false); return; }
       if (event.key === "Escape" && focusedId) closeWindow(focusedId);
       if (event.altKey && ["1", "2", "3"].includes(event.key)) changeMode(modes[Number(event.key) - 1]);
       const sequence = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
@@ -112,14 +115,14 @@ export function SecurityTerminal() {
 
   function changeMode(next: ScannerMode) {
     const shouldAddHistoryEntry = selectedId !== null || windows.length > 0;
-    setMode(next); setActiveId(null); setSelectedId(null); setWindows([]); setFocusedId(null); setViewAllOpen(false); setArchiveError(null); setWarningIndex(0); setScanVersion(value => value + 1); setMessage(`LOADING ${next} ARCHIVE INDEX`); setScanning(true);
+    setMode(next); setActiveId(null); setSelectedId(null); setWindows([]); setFocusedId(null); setViewAllOpen(false); setMobileConsoleOpen(false); setArchiveError(null); setWarningIndex(0); setScanVersion(value => value + 1); setMessage(`LOADING ${next} ARCHIVE INDEX`); setScanning(true);
     window.history[shouldAddHistoryEntry ? "pushState" : "replaceState"]({}, "", "/");
     window.setTimeout(() => { setScanning(false); setMessage(`${next} INDEX READY / ${getModeRecords(next).length} RECORDS`); }, 560);
   }
 
   function runScan() {
     if (windows.length > 0) window.history.pushState({}, "", "/");
-    setWindows([]); setFocusedId(null); setViewAllOpen(false); setScanning(false); setSelectedId(null); setActiveId(null); setWarningIndex(value => (value + 1) % (modeCopy[mode].alternatives.length + 1)); setScanVersion(value => value + 1); window.requestAnimationFrame(() => { setScanning(true); setMessage("RESCAN ACTIVE / RE-INDEXING PHYSICAL SIGNATURES"); });
+    setWindows([]); setFocusedId(null); setViewAllOpen(false); setMobileConsoleOpen(false); setScanning(false); setSelectedId(null); setActiveId(null); setWarningIndex(value => (value + 1) % (modeCopy[mode].alternatives.length + 1)); setScanVersion(value => value + 1); window.requestAnimationFrame(() => { setScanning(true); setMessage("RESCAN ACTIVE / RE-INDEXING PHYSICAL SIGNATURES"); });
     window.setTimeout(() => { setScanning(false); setMessage(`SCAN COMPLETE / ${modeRecords.length} RECORDS AVAILABLE`); }, 1200);
   }
 
@@ -131,7 +134,8 @@ export function SecurityTerminal() {
 
   function openRecord(record: InspectionRecord, historyAction: "push" | "replace" | "none" = "push") {
     setViewAllOpen(false);
-    if (historyAction === "push" && windows.some(item => item.record.id === record.id)) {
+    const compact = typeof window !== "undefined" && window.innerWidth <= 820;
+    if (historyAction === "push" && (windows.some(item => item.record.id === record.id) || (compact && selectedId === record.id && mobileConsoleOpen))) {
       focusWindow(record.id);
       return;
     }
@@ -143,9 +147,14 @@ export function SecurityTerminal() {
       setSelectedId(null);
     }
     topZ.current += 1;
-    const compact = typeof window !== "undefined" && window.innerWidth < 720;
-    setWindows([{ record, x: compact ? 0 : 360, y: compact ? 0 : 116, z: topZ.current, minimized: false }]);
-    setFocusedId(record.id); setMessage(`RECORD OPENED / ${record.code}`);
+    if (compact && record.mode !== "GLOBAL") {
+      setWindows([]); setFocusedId(null); setMobileConsoleOpen(true);
+    } else {
+      setMobileConsoleOpen(false);
+      setWindows([{ record, x: 360, y: 116, z: topZ.current, minimized: false }]);
+      setFocusedId(record.id);
+    }
+    setMessage(`RECORD OPENED / ${record.code}`);
     if (historyAction !== "none") {
       const path = record.mode === "GLOBAL" ? "/" : getRecordPath(record);
       window.history[historyAction === "replace" ? "replaceState" : "pushState"]({}, "", path);
@@ -183,16 +192,17 @@ export function SecurityTerminal() {
   function focusWindow(id: string) { topZ.current += 1; setFocusedId(id); setWindows(items => items.map(win => win.record.id === id ? { ...win, z: topZ.current } : win)); }
   function minimizeWindow(id: string) { setWindows(items => items.map(win => win.record.id === id ? { ...win, minimized: !win.minimized } : win)); }
   function moveWindow(id: string, x: number, y: number) { setWindows(items => items.map(win => win.record.id === id ? { ...win, x, y } : win)); }
-  function reset() { setWindows([]); setFocusedId(null); setViewAllOpen(false); setSelectedId(null); setActiveId(null); setArchiveError(null); setDiagnosticMode(false); setWarningIndex(0); setScanVersion(value => value + 1); setMessage("VIEW RESET / SELECT DETECTED OBJECT TO INSPECT"); window.history.pushState({}, "", "/"); }
+  function reset() { setWindows([]); setFocusedId(null); setViewAllOpen(false); setMobileConsoleOpen(false); setSelectedId(null); setActiveId(null); setArchiveError(null); setDiagnosticMode(false); setWarningIndex(0); setScanVersion(value => value + 1); setMessage("VIEW RESET / SELECT DETECTED OBJECT TO INSPECT"); window.history.pushState({}, "", "/"); }
 
   function openArchiveIndex() {
     if (windows.length > 0 || selectedId) window.history.pushState({}, "", "/");
     setWindows([]); setFocusedId(null); setSelectedId(null); setActiveId(null); setViewAllOpen(true);
+    setMobileConsoleOpen(false);
     setMessage(`FULL ${mode} INDEX OPEN / ${modeRecords.length} RECORDS`);
   }
 
   return (
-    <main className={`terminal-shell ${booting ? "is-booting" : ""} ${diagnosticMode ? "diagnostic-mode" : ""}`}>
+    <main className={`terminal-shell ${booting ? "is-booting" : ""} ${diagnosticMode ? "diagnostic-mode" : ""} ${mobileConsoleOpen ? "mobile-console-open" : ""}`}>
       <a className="skip-link" href="#controls">Skip to scanner controls</a>
       <header className="app-titlebar">
         <div className="app-mark" aria-hidden="true"><i/><i/><i/></div>
@@ -237,7 +247,6 @@ export function SecurityTerminal() {
             <ol>{modeRecords.map(record => <li key={record.id} className={activeId === record.id ? "active" : ""} onMouseEnter={() => setActiveId(record.id)} onMouseLeave={() => setActiveId(null)}><button onClick={() => selectRecord(record)}><span className="threat-icon">✥</span><span><small>{record.category}</small><b>{record.title}</b><small>{record.association ?? record.subtitle}</small></span><em>{record.code}</em></button></li>)}</ol>
             <div className="capability-strip"><span>TECHNICAL SURFACE</span><p>AI applications · agent safety · evaluation · retrieval · APIs · distributed systems · performance · developer tooling · reliability</p></div>
             <div className="subject-history"><span>BACKGROUND SIGNALS</span><b>{organizations.filter(item => item.type === "EMPLOYER").map(item => item.name).join(" · ")}</b><span>ACADEMIC ORIGIN</span><b>Carnegie Mellon University</b></div>
-            <nav className="external-connections" aria-label="External connections"><span>EXTERNAL CONNECTIONS</span><div>{externalLinks.map(link => <a className={link.id === "x" ? "external-link-x" : undefined} aria-label={link.id === "x" ? "X profile, @niferential" : link.label} title={link.id === "x" ? "@niferential on X" : undefined} key={link.id} href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined}>{link.label}</a>)}</div></nav>
           </> : <div className="console-record">
             <div className="console-nav"><button onClick={() => closeWindow(selectedRecord.id)}>‹ QUEUE</button><span>{modeRecords.findIndex(record => record.id === selectedRecord.id) + 1}/{modeRecords.length}</span><button onClick={() => selectAdjacent(-1)} aria-label="Previous detected object">◀</button><button onClick={() => selectAdjacent(1)} aria-label="Next detected object">▶</button></div>
             <span className="console-category">{selectedRecord.code} / {selectedRecord.classification}</span>
@@ -270,6 +279,8 @@ export function SecurityTerminal() {
 
       <WindowManager windows={windows} focusedId={focusedId} close={closeWindow} focus={focusWindow} minimize={minimizeWindow} move={moveWindow}/>
       {viewAllOpen && <ArchiveIndexWindow mode={mode} records={modeRecords} onClose={() => setViewAllOpen(false)} onOpen={record => openRecord(record)}/>}
+      {mobileConsoleOpen && <div className="mobile-console-scrim" onPointerDown={() => setMobileConsoleOpen(false)}/>}
+      <MobileInspectionDrawer mode={mode} records={modeRecords} selectedRecord={selectedRecord} warning={currentWarning} scanning={scanning} open={mobileConsoleOpen} onToggle={() => setMobileConsoleOpen(value => !value)} onCloseRecord={() => selectedRecord && closeWindow(selectedRecord.id)} onOpenRecord={openRecord} onInspectEvidence={inspectEvidence} onPrevious={() => selectAdjacent(-1)} onNext={() => selectAdjacent(1)}/>
 
       {booting && <div className="startup" role="status"><div className="startup-box"><div className="startup-logo">NA<span>◫</span></div><strong>NIFASATH ARCHIVE</strong><p>{message}</p><div className="boot-progress"><i/></div><button onClick={() => { setBooting(false); setScanning(false); setMessage("STARTUP SKIPPED / ARCHIVE READY"); }}>SKIP STARTUP</button></div></div>}
     </main>
