@@ -216,6 +216,7 @@ export function SecurityTerminal() {
           <div className="scanner-toolbar">
             <span><b>FILE:</b> NIFASATH_PERSONNEL_ARCHIVE.XRAY</span><span>ARCHIVE CAPTURE: 2026.11.15 / 01:33 EST</span><span className="live-led">● SIMULATED SCAN</span>
           </div>
+          <div className="scanner-utility-actions"><div className="scan-alert" role="status">⚠ {diagnosticMode ? "UNAUTHORIZED CURIOSITY DETECTED" : currentWarning}{diagnosticMode && <button onClick={() => setDiagnosticMode(false)}>NORMALIZE</button>}</div><button className="view-all-button" onClick={openArchiveIndex}>▦ VIEW ALL {mode}</button></div>
           <div className="scanner-viewport" ref={scannerViewportRef}>
             <div className="scan-stage">
               <ScannerScene mode={mode}/>
@@ -225,7 +226,6 @@ export function SecurityTerminal() {
             <div className={`scan-beam ${scanning ? "running" : ""}`} aria-hidden="true"/>
             <div className="grain" aria-hidden="true"/>
             <div className="calibration-grid" aria-hidden="true"><i/><i/><span>CAL-X 048</span><span>CAL-Y 112</span></div>
-            <div className="scanner-utility-actions"><div className="scan-alert" role="status">⚠ {diagnosticMode ? "UNAUTHORIZED CURIOSITY DETECTED" : currentWarning}{diagnosticMode && <button onClick={() => setDiagnosticMode(false)}>NORMALIZE</button>}</div><button className="view-all-button" onClick={openArchiveIndex}>▦ VIEW ALL {mode}</button></div>
             {archiveError && <div className="archive-error" role="alert"><b>ARCHIVE LOOKUP ERROR</b><span>{archiveError}</span><button onClick={() => { setArchiveError(null); window.history.replaceState({}, "", "/"); }}>RETURN TO INDEX</button></div>}
             <div className="interaction-hint">SELECT DETECTED OBJECT TO INSPECT · ALT+1/2/3 CHANGES MODE</div>
             <div className="viewport-ticks" aria-hidden="true">SIM 12.8 KEV <span>◢ MULTI-SPECTRAL ARCHIVE RENDER</span> VIEW AUTO-FIT</div>
